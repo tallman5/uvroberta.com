@@ -2,7 +2,7 @@
   "name": "uvroberta.com",
   "version": "1.0.0",
   "private": true,
-  "description": "uvroberta.com",
+  "description": "Main website for www.uvroberta.com",
   "author": "tallman5",
   "keywords": [
     "gatsby"
@@ -17,16 +17,25 @@
   },
   "dependencies": {
     "@mdx-js/react": "^2.3.0",
+    "@microsoft/signalr": "^7.0.9",
+    "@react-spring/web": "^9.7.3",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@tallman/strong-strap": "^0.0.34",
+    "azure-maps-control": "^2.3.1",
+    "bootstrap": "^5.3.0",
     "gatsby": "^5.11.0",
     "gatsby-plugin-image": "^3.11.0",
     "gatsby-plugin-manifest": "^5.11.0",
     "gatsby-plugin-mdx": "^5.11.0",
+    "gatsby-plugin-purgecss": "^6.2.1",
     "gatsby-plugin-sharp": "^5.11.0",
     "gatsby-plugin-sitemap": "^6.11.0",
+    "gatsby-remark-vscode": "^3.3.1",
     "gatsby-source-filesystem": "^5.11.0",
     "gatsby-transformer-sharp": "^5.11.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
