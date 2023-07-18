@@ -2,6 +2,7 @@ import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import * as azmaps from 'azure-maps-control';
 import 'azure-maps-control/dist/atlas.css';
+import { isBrowser } from "@tallman/strong-strap";
 
 const DashboardIndex: React.FC<PageProps> = () => {
     const robertaMarker = new azmaps.HtmlMarker({
@@ -10,7 +11,8 @@ const DashboardIndex: React.FC<PageProps> = () => {
     });
 
     React.useEffect(() => {
-        // Create a new map instance
+        if (!isBrowser) return;
+
         const map = new azmaps.Map('map', {
             authOptions: {
                 authType: azmaps.AuthenticationType.subscriptionKey,
