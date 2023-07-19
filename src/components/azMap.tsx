@@ -2,8 +2,11 @@ import { isBrowser } from '@tallman/strong-strap';
 import React, { useEffect, useState } from 'react'
 
 const AzMap = () => {
+    const [imageId] = useState("robertaTop");
     const [defCenter] = useState([-75.507144, 40.229057]);
     const [elementId] = useState("mapDiv");
+    const [map, setMap] = useState();
+    const [robertaMarker, setRobertaMarker] = useState();
 
     function waitForAtlas() {
         if (typeof atlas === 'undefined') {
@@ -11,7 +14,6 @@ const AzMap = () => {
         }
         else {
             const amk = process.env.GATSBY_AZ_MAP_KEY
-            console.log("AZ: " + amk);
             const newMap = new atlas.Map(elementId, {
                 authOptions: {
                     authType: 'subscriptionKey',
@@ -21,6 +23,15 @@ const AzMap = () => {
                 style: 'satellite',
                 zoom: 19,
             });
+            setMap(newMap);
+
+            const newMarker = new atlas.HtmlMarker({
+                id: imageId,
+                htmlContent: "<img src='../../roberta-top.webp' style='width: 48px;' alt='Roberta' />",
+                position: defCenter,
+            });
+            newMap.markers.add(newMarker);
+            setRobertaMarker(newMarker);
         }
     }
 
