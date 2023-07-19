@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      AZ_MAP_KEY: ${{ secrets.AZ_MAP_KEY }}
+      AZ_MAP_KEY: ${{ secrets.az_map_key }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
         env:
-          AZ_MAP_KEY: ${{ secrets.AZ_MAP_KEY }}
+          AZ_MAP_KEY: ${{ secrets.az_map_key }}
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
