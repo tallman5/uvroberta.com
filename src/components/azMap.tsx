@@ -10,7 +10,7 @@ const AzMap = () => {
             setTimeout(waitForAtlas, 1000);
         }
         else {
-            const amk = process.env.AZ_MAP_KEY
+            const amk = process.env.GATSBY_AZ_MAP_KEY
             console.log("AZ: " + amk);
             const newMap = new atlas.Map(elementId, {
                 authOptions: {
