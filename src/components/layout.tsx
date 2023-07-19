@@ -7,9 +7,9 @@ export interface ILayout extends ComponentPropsWithoutRef<'div'> {
 
 const Layout = ({ children, padTop = true }: ILayout) => {
     return (
-        <div style={{ minHeight: '100.1vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ minHeight: (padTop == true) ? '100.1.vh' : '100vh', display: 'flex', flexDirection: 'column' }}>
             <Header />
-            <main style={{ flexGrow: 1, marginTop: (padTop) ? '56px' : '0px' }}>
+            <main style={{ flexGrow: 1, marginTop: (padTop == true) ? '56px' : '0px' }}>
                 {children}
             </main>
         </div>
