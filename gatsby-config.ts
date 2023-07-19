@@ -1,7 +1,5 @@
 import type { GatsbyConfig } from "gatsby";
 
-console.log("AMK: " + process.env.AZ_MAP_KEY);
-
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `uvroberta.com`,
