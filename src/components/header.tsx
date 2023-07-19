@@ -8,7 +8,7 @@ const Header = () => {
 
     return (
         <header className='bg-light'>
-            <nav className="navbar navbar-expand-md">
+            <nav className="navbar navbar-expand-md fixed-top" style={{ backgroundColor: "#ffffffaa" }}>
                 <div className="container">
                     <Link className="navbar-brand" to='/'>
                         <StaticImage src='../images/icon.png' alt='Roberta' width={32} />
