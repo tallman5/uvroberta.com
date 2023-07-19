@@ -23,9 +23,9 @@ const Header = () => {
                     <div style={{ justifyContent: 'space-between' }} className={(navMenuVisible === true) ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'} id="navbarNavAltMarkup">
                         <div className={'navbar-nav'}>
                             {
-                                (process.env.NAME === "PROD")
-                                    ? null
-                                    : <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>
+                                (process.env.NODE_ENV === "development")
+                                    ? <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>
+                                    : null
                             }
                         </div>
                         <div className='d-flex'>
