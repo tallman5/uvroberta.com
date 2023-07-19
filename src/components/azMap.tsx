@@ -10,7 +10,7 @@ const AzMap = () => {
             setTimeout(waitForAtlas, 1000);
         }
         else {
-            console.log(atlas);
+            console.log("AZ: " + process.env.AZ_MAP_KEY);
             const newMap = new atlas.Map(elementId, {
                 authOptions: {
                     authType: 'subscriptionKey',
