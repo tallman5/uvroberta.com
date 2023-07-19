@@ -22,7 +22,6 @@ const Header = () => {
                     </button>
                     <div style={{ justifyContent: 'space-between' }} className={(navMenuVisible === true) ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'} id="navbarNavAltMarkup">
                         <div className={'navbar-nav'}>
-                            <Link className={(pathname.startsWith('/dashboard')) ? 'nav-link active' : 'nav-link'} to="/dashboard">DASHBOARD</Link>
                             {
                                 (process.env.NAME === "PROD")
                                     ? null
