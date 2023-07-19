@@ -26,8 +26,6 @@ const DashboardIndex: React.FC<PageProps> = () => {
         });
         setMap(newMap);
 
-        console.log(newMap);
-
         // const newMap = new atlas.Map(mapElementId, {
         //     authOptions: {
         //         authType: 'subscriptionKey',
@@ -73,21 +71,6 @@ const DashboardIndex: React.FC<PageProps> = () => {
     }, []);
 
     function ensureMapResources() {
-        // const scriptUrls = [
-        //     "https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js",
-        //     "https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js",
-        // ]
-        // scriptUrls.forEach(scriptUrl => {
-        //     const scriptElement = document.querySelector('script[src="' + scriptUrl + '"]');
-        //     if (!scriptElement) {
-        //         const se = document.createElement('script');
-        //         se.src = scriptUrl;
-        //         se.async = true;
-        //         se.defer = true;
-        //         document.body.appendChild(se);
-        //     }
-        // });
-
         const cssUrls = [
             "https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css",
         ]
@@ -104,7 +87,7 @@ const DashboardIndex: React.FC<PageProps> = () => {
 
     return (
         <Layout padTop={false}>
-            <div style={{ height: '100vh', width: '100vw' }}>
+            <div style={{ height: '100vh', width: '100vw' }} title={process.env.AZ_MAP_KEY}>
                 <div id={mapElementId} style={{ height: '100%', width: '100%' }} />
             </div>
         </Layout>

@@ -19,7 +19,8 @@ jobs:
         with:
           submodules: true
       - name: Set up environment variables
-        run: echo "AZ_MAP_KEY=${{ secrets.AZ_MAP_KEY }}" >> $GITHUB_ENV
+        env:
+          AZ_MAP_KEY: ${{ secrets.AZ_MAP_KEY }}
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
