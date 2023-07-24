@@ -2,11 +2,15 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider, TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import appReducer from '../features/app/appSlice'
+import hubReducer from '../features/hub/hubSlice'
+import robertaReducer from '../features/roberta/robertaSlice'
 
 
 export const createStore = () => configureStore({
     reducer: {
         app: appReducer,
+        hub: hubReducer,
+        roberta: robertaReducer,
     },
 })
 

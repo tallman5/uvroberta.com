@@ -1,5 +1,7 @@
 import { CSSProperties } from 'react'
 
+export const DashFrontScale = 20;
+
 export const Cover: CSSProperties = {
     height: '100%',
     left: 0,
@@ -17,9 +19,9 @@ export const DashBack: CSSProperties = {
 
 export const DashFront: CSSProperties = {
     bottom: 0,
-    height: '30vh',
+    height: (DashFrontScale * 9) + 'px',
     left: 0,
     position: 'absolute',
-    width: '20vw',
+    width: (DashFrontScale * 16) + 'px',
     zIndex: 10,
 }

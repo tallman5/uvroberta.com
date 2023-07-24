@@ -1,10 +1,17 @@
+import { isBrowser } from '@tallman/strong-strap/dist/utilities'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Header = () => {
     const [navMenuVisible, setNavMenuVisible] = useState(false)
-    const [pathname] = useState('')
+    const [pathname, setPathname] = useState('')
+
+    useEffect(() => {
+        if (isBrowser) {
+            setPathname(window.location.pathname.toLowerCase())
+        }
+    }, [])
 
     return (
         <header className='bg-light'>
@@ -22,6 +29,7 @@ const Header = () => {
                     </button>
                     <div style={{ justifyContent: 'space-between' }} className={(navMenuVisible === true) ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'} id="navbarNavAltMarkup">
                         <div className={'navbar-nav'}>
+                            <Link className={(pathname.startsWith('/rob-state')) ? 'nav-link active' : 'nav-link'} to="/rob-state">STATE</Link>
                             {
                                 (process.env.NODE_ENV === "development")
                                     ? <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>

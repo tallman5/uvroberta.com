@@ -1,12 +1,15 @@
 import { isBrowser } from '@tallman/strong-strap';
 import React, { useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../context';
+import { selectRoberta } from '../features/roberta/robertaSlice';
 
 const AzMap = () => {
     const [imageId] = useState("robertaTop");
     const [defCenter] = useState([-75.507144, 40.229057]);
     const [elementId] = useState("mapDiv");
-    const [map, setMap] = useState();
-    const [robertaMarker, setRobertaMarker] = useState();
+    let map: any;
+    let robertaMarker: any;
+    const robertaState = useAppSelector(selectRoberta);
 
     function waitForAtlas() {
         if (typeof atlas === 'undefined') {
@@ -14,7 +17,7 @@ const AzMap = () => {
         }
         else {
             const amk = process.env.GATSBY_AZ_MAP_KEY
-            const newMap = new atlas.Map(elementId, {
+            map = new atlas.Map(elementId, {
                 authOptions: {
                     authType: 'subscriptionKey',
                     subscriptionKey: amk,
@@ -23,15 +26,13 @@ const AzMap = () => {
                 style: 'satellite',
                 zoom: 19,
             });
-            setMap(newMap);
 
-            const newMarker = new atlas.HtmlMarker({
+            robertaMarker = new atlas.HtmlMarker({
                 id: imageId,
-                htmlContent: "<img src='../../roberta-top.webp' style='width: 48px;' alt='Roberta' />",
+                htmlContent: "<img id='" + imageId + "' src='../../roberta-top.webp' style='width: 48px;' alt='Roberta' />",
                 position: defCenter,
             });
-            newMap.markers.add(newMarker);
-            setRobertaMarker(newMarker);
+            map.markers.add(robertaMarker);
         }
     }
 
@@ -67,8 +68,21 @@ const AzMap = () => {
         waitForAtlas();
     }, []);
 
+    useEffect(() => {
+        if (!map || !robertaMarker) return;
+
+        map.setCamera({
+            center: [robertaState.gpsState.longitude, robertaState.gpsState.latitude]
+        })
+
+        robertaMarker.setOptions({
+            position: [robertaState.gpsState.longitude, robertaState.gpsState.latitude],
+            htmlContent: "<img id='" + imageId + "' src='../../roberta-top.webp' style='width: 48px; transform: rotate(" + robertaState.gpsState.heading + "deg)' alt='Roberta' />",
+        });
+    }, [robertaState])
+
     return (
-        <div id={elementId} style={{ height: "100%", border: "1px solid red" }} />
+        <div id={elementId} style={{ height: "100%" }} />
     )
 }
 
