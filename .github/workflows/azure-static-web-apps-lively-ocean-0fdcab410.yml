@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
       - name: Set up environment variables
-        run: 
+        run: |
           echo "GATSBY_AZ_MAP_KEY=$GATSBY_AZ_MAP_KEY" >> $GITHUB_ENV
           echo "GATSBY_HUB_URL=$GATSBY_HUB_URL" >> $GITHUB_ENV
           echo "GATSBY_WEBCAM_URL=$GATSBY_WEBCAM_URL" >> $GITHUB_ENV
