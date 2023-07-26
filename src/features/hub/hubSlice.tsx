@@ -3,16 +3,18 @@ import { AppThunk, RootState } from "../../context"
 const signalR = require("@microsoft/signalr")
 import { HubConnection } from '@microsoft/signalr'
 import { updateGpsState } from "../roberta/robertaSlice";
+import { getAccessToken } from "../appUser/appUserSlice";
 
 let hubConnection: HubConnection;
-const hubUrl = process.env.GATSBY_HUB_URL;
 
 export type HubState = {
     connectionStatus: string
+    hubUrl: string
 }
 
 const initialState: HubState = {
     connectionStatus: 'Disconnected',
+    hubUrl: process.env.GATSBY_BASE_URL + "/robertaHub"
 }
 
 export const hubSlice = createSlice({
@@ -41,8 +43,15 @@ export const connectToHub = (): AppThunk => async (dispatch, getState) => {
     if (currentStatus !== 'Disconnected')
         return;
 
+    const gat = dispatch(getAccessToken());
+    const accessToken = (await gat).payload;
+    if (accessToken == '') return;
+    
+    console.log(accessToken);
+    console.log(state.hub.hubUrl);
+    
     hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(hubUrl)
+        .withUrl(state.hub.hubUrl, { accessTokenFactory: () => accessToken })
         .withAutomaticReconnect()
         .build();
 
@@ -68,7 +77,7 @@ export const connectToHub = (): AppThunk => async (dispatch, getState) => {
     return returnValue;
 };
 
-export const disconnectHub = (): AppThunk => async (dispatch) => {
+export const disconnectHub = (): AppThunk => async () => {
     if (hubConnection && hubConnection.state !== "Disconnected")
         hubConnection.stop()
 };

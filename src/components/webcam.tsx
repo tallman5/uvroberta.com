@@ -2,12 +2,12 @@ import React, { ComponentPropsWithoutRef, useEffect, useState } from 'react'
 import * as Styles from '../styles'
 
 export interface ILayout extends ComponentPropsWithoutRef<'div'> {
-    src?: string
+    src?: string,
 }
 
 const Webcam = ({ src }: ILayout) => {
     return (
-        <img style={Styles.Cover} src={src} />
+        <img style={Styles.Cover} src={src} alt='Webcam' />
     )
 }
 

@@ -21,11 +21,11 @@ jobs:
       - name: Set up environment variables
         run: |
           echo "GATSBY_AZ_MAP_KEY=$GATSBY_AZ_MAP_KEY" >> $GITHUB_ENV
-          echo "GATSBY_HUB_URL=$GATSBY_HUB_URL" >> $GITHUB_ENV
+          echo "GATSBY_BASE_URL=$GATSBY_BASE_URL" >> $GITHUB_ENV
           echo "GATSBY_WEBCAM_URL=$GATSBY_WEBCAM_URL" >> $GITHUB_ENV
         env:
           GATSBY_AZ_MAP_KEY: ${{ secrets.GATSBY_AZ_MAP_KEY }}
-          GATSBY_HUB_URL: ${{ secrets.GATSBY_HUB_URL }}
+          GATSBY_BASE_URL: ${{ secrets.GATSBY_BASE_URL }}
           GATSBY_WEBCAM_URL: ${{ secrets.GATSBY_WEBCAM_URL }}
       - name: Build And Deploy
         id: builddeploy

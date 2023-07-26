@@ -1,4 +1,4 @@
-import { isBrowser } from '@tallman/strong-strap/dist/utilities'
+import { isBrowser } from '@tallman/strong-strap';
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 import React, { useEffect, useState } from 'react'
