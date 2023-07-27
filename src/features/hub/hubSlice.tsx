@@ -4,6 +4,7 @@ const signalR = require("@microsoft/signalr")
 import { HubConnection } from '@microsoft/signalr'
 import { updateGpsState } from "../roberta/robertaSlice";
 import { getAccessToken } from "../appUser/appUserSlice";
+import { isBrowser } from "@tallman/strong-strap";
 
 let hubConnection: HubConnection;
 
@@ -35,6 +36,8 @@ export const selectConnectionStatus = createSelector(selectConnectionStatusBase,
 
 // Methods
 export const connectToHub = (): AppThunk => async (dispatch, getState) => {
+    if (!isBrowser) return;
+
     if (hubConnection && (hubConnection.state === "Connected" || hubConnection.state === "Connecting"))
         return hubConnection;
 
@@ -46,10 +49,7 @@ export const connectToHub = (): AppThunk => async (dispatch, getState) => {
     const gat = dispatch(getAccessToken());
     const accessToken = (await gat).payload;
     if (accessToken == '') return;
-    
-    console.log(accessToken);
-    console.log(state.hub.hubUrl);
-    
+
     hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(state.hub.hubUrl, { accessTokenFactory: () => accessToken })
         .withAutomaticReconnect()

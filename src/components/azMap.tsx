@@ -7,8 +7,9 @@ const AzMap = () => {
     const [imageId] = useState("robertaTop");
     const [defCenter] = useState([-75.507144, 40.229057]);
     const [elementId] = useState("mapDiv");
-    let map: any;
-    let robertaMarker: any;
+    const [map, setMap]=useState();
+    const [robertaMarker, setRobertaMarker]=useState();
+
     const robertaState = useAppSelector(selectRoberta);
 
     function waitForAtlas() {
@@ -17,7 +18,7 @@ const AzMap = () => {
         }
         else {
             const amk = process.env.GATSBY_AZ_MAP_KEY
-            map = new atlas.Map(elementId, {
+            var newMap = new atlas.Map(elementId, {
                 authOptions: {
                     authType: 'subscriptionKey',
                     subscriptionKey: amk,
@@ -26,13 +27,15 @@ const AzMap = () => {
                 style: 'satellite',
                 zoom: 19,
             });
+            setMap(newMap);
 
-            robertaMarker = new atlas.HtmlMarker({
+            var newRobertaMarker = new atlas.HtmlMarker({
                 id: imageId,
                 htmlContent: "<img id='" + imageId + "' src='../../roberta-top.webp' style='width: 48px;' alt='Roberta' />",
                 position: defCenter,
             });
-            map.markers.add(robertaMarker);
+            setRobertaMarker(newRobertaMarker);
+            newMap.markers.add(newRobertaMarker);
         }
     }
 

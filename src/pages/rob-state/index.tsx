@@ -3,14 +3,19 @@ import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../../components/layout"
 import { connectToHub, selectConnectionStatus } from "../../features/hub/hubSlice"
 import { useAppDispatch, useAppSelector } from "../../context"
-import { Stringify } from "@tallman/strong-strap"
+import { Stringify, isBrowser } from "@tallman/strong-strap"
 import { selectRoberta } from "../../features/roberta/robertaSlice"
+import { useEffect } from "react"
 
 const RobertaState: React.FC<PageProps> = () => {
     const dispatch = useAppDispatch()
-    dispatch(connectToHub());
     const connectionStatus = useAppSelector(selectConnectionStatus);
     const robertaState = useAppSelector(selectRoberta);
+
+    useEffect(() => {
+        if (!isBrowser) return;
+        dispatch(connectToHub());
+    }, [])
 
     return (
         <Layout>

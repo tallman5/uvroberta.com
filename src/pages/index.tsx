@@ -2,13 +2,20 @@ import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../components/layout"
 import AzMap from "../components/azMap"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import * as Styles from "../styles"
 import Webcam from "../components/webcam"
+import { useAppDispatch } from "../context"
+import { connectToHub } from "../features/hub/hubSlice"
 
 const IndexPage: React.FC<PageProps> = () => {
   const [isMapFocused, setIsMapFocused] = useState(true);
   const webcamSrc = process.env.GATSBY_WEBCAM_URL
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(connectToHub());
+  }, [])
 
   return (
     <Layout padTop={false}>
