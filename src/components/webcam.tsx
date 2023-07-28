@@ -7,7 +7,7 @@ export interface ILayout extends ComponentPropsWithoutRef<'div'> {
 
 const Webcam = ({ src }: ILayout) => {
     return (
-        <img style={Styles.Cover} src={src} alt='Webcam' />
+        <img style={Styles.Cover} src={src} alt='Roberta Webcam' />
     )
 }
 
