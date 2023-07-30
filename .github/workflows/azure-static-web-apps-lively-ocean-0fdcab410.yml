@@ -24,7 +24,6 @@ jobs:
           echo "GATSBY_BASE_URL=$GATSBY_BASE_URL" >> $GITHUB_ENV
           echo "GATSBY_WEBCAM_URL=$GATSBY_WEBCAM_URL" >> $GITHUB_ENV
           echo "GATSBY_AUTHORITY=$GATSBY_AUTHORITY" >> $GITHUB_ENV
-          echo "GATSBY_BASE_URL=$GATSBY_BASE_URL" >> $GITHUB_ENV
           echo "GATSBY_CLIENT_ID=$GATSBY_CLIENT_ID" >> $GITHUB_ENV
           echo "GATSBY_REDIRECT=$GATSBY_REDIRECT" >> $GITHUB_ENV
           echo "GATSBY_SCOPE=$GATSBY_SCOPE" >> $GITHUB_ENV
@@ -33,7 +32,6 @@ jobs:
           GATSBY_BASE_URL: ${{ secrets.GATSBY_BASE_URL }}
           GATSBY_WEBCAM_URL: ${{ secrets.GATSBY_WEBCAM_URL }}
           GATSBY_AUTHORITY: ${{ secrets.GATSBY_AUTHORITY }}
-          GATSBY_BASE_URL: ${{ secrets.GATSBY_BASE_URL }}
           GATSBY_CLIENT_ID: ${{ secrets.GATSBY_CLIENT_ID }}
           GATSBY_REDIRECT: ${{ secrets.GATSBY_REDIRECT }}
           GATSBY_SCOPE: ${{ secrets.GATSBY_SCOPE }}
