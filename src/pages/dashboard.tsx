@@ -10,7 +10,6 @@ import { connectToHub } from "../features/hub/hubSlice"
 
 const Dashboard: React.FC<PageProps> = () => {
   const [isMapFocused, setIsMapFocused] = useState(true);
-  const webcamSrc = process.env.GATSBY_WEBCAM_URL
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const Dashboard: React.FC<PageProps> = () => {
       </div>
 
       <div id="dashCam" style={(isMapFocused) ? Styles.DashFront : Styles.DashBack} title="Click to toggle view" onClick={() => { setIsMapFocused(!isMapFocused) }}>
-        <Webcam src={webcamSrc} />
+        <Webcam src={process.env.GATSBY_WEBCAM_URL} />
       </div>
 
     </Layout>

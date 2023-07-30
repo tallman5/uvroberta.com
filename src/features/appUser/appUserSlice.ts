@@ -11,10 +11,12 @@ export type UserToken = {
 }
 
 export type AppUserState = {
+    guestAccessToken: string | null
     userToken: UserToken | null
 }
 
 const initialState: AppUserState = {
+    guestAccessToken: null,
     userToken: null,
 }
 
@@ -24,6 +26,9 @@ export const appUserSlice = createSlice({
     reducers: {
         clearToken: (state: AppUserState) => {
             state.userToken = null
+        },
+        setGuestAccessToken: (state: AppUserState, action) => {
+            state.guestAccessToken = action.payload
         },
         setUserToken: (state: AppUserState, action) => {
             state.userToken = action.payload
@@ -38,26 +43,31 @@ export const selectUserNameBase = (state: RootState) => state.appUser.userToken?
 
 
 // Reselectors
-export const selectAccessToken = createSelector(selectTokenBase, at => at?.accessToken);
 export const selectAppUser = createSelector(selectAppUserBase, (val: AppUserState) => val);
 export const selectUserName = createSelector(selectUserNameBase, val => val);
+
 
 // Methods
 export const getAccessToken = createAsyncThunk<string, void, { state: RootState }>(
     'getAccessToken',
     async (_, thunkAPI) => {
-        let ut = thunkAPI.getState().appUser.userToken;
-        if (ut && ut.accessToken) // need to check expiration
-            return ut.accessToken;
-        ut = await executeFetchAsync(process.env.GATSBY_BASE_URL + '/api/user/guestToken');
-        if (ut && ut.accessToken) {
-            thunkAPI.dispatch(setUserToken(ut));
-            return ut.accessToken;
+        let appUser = thunkAPI.getState().appUser;
+
+        if (appUser.userToken?.accessToken) // need to check expiration
+            return appUser.userToken.accessToken;
+
+        if (appUser.guestAccessToken)
+            return appUser.guestAccessToken;
+
+        const guestUt: UserToken = await executeFetchAsync(process.env.GATSBY_BASE_URL + '/api/user/guestToken');
+        if (guestUt && guestUt.accessToken) {
+            thunkAPI.dispatch(setGuestAccessToken(guestUt.accessToken));
+            return guestUt.accessToken;
         }
         throw 'Could not aquire guest token.'
     }
 );
 
 // Main slice exports
-export const { clearToken, setUserToken } = appUserSlice.actions;
+export const { clearToken, setGuestAccessToken, setUserToken } = appUserSlice.actions;
 export default appUserSlice.reducer;

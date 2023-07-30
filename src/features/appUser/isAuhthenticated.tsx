@@ -1,12 +1,11 @@
 import React, { ComponentPropsWithoutRef } from "react";
-import { useAppSelector } from '../../context'
-import { selectUserName } from "./appUserSlice";
+import { useIsAuthenticated } from "@azure/msal-react";
 
 interface IIsAuthenticated extends ComponentPropsWithoutRef<'div'> { }
 
 const IsAuthenticated = ({ children }: IIsAuthenticated) => {
-    const userName = useAppSelector(selectUserName)
-    if (userName)
+    const isAuthenticated = useIsAuthenticated();
+    if (isAuthenticated)
         return <>{children}</>
     return null
 }

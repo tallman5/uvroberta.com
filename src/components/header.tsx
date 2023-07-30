@@ -41,7 +41,7 @@ const Header = () => {
                             }
                         </div>
                         <div className='d-flex'>
-                            {/* <AccountDropdown /> */}
+                            <AccountDropdown />
                         </div>
                     </div>
                 </div>

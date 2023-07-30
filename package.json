@@ -16,6 +16,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.38.0",
+    "@azure/msal-react": "^1.5.9",
     "@mdx-js/react": "^2.3.0",
     "@microsoft/signalr": "^7.0.9",
     "@react-spring/web": "^9.7.3",

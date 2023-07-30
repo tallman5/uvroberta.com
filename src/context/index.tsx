@@ -5,6 +5,11 @@ import appReducer from '../features/app/appSlice'
 import appUserReducer from '../features/appUser/appUserSlice'
 import hubReducer from '../features/hub/hubSlice'
 import robertaReducer from '../features/roberta/robertaSlice'
+import { msalConfig } from "./authConfig";
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 export const createStore = () => configureStore({
     reducer: {
@@ -19,8 +24,10 @@ export const wrapWithProvider = ({ element }: any) => {
     const store = createStore();
 
     return (
-        <Provider store={store} >
-            {element}
+        <Provider store={store}>
+            <MsalProvider instance={msalInstance}>
+                {element}
+            </MsalProvider>
         </Provider>
     )
 }
