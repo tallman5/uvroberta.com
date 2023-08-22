@@ -4,11 +4,15 @@ import IsAuthenticated from './isAuhthenticated';
 import NotAuthenticated from './notAuthenticated';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest, scopes } from '../../context/authConfig';
+import { clearToken, setAccessToken } from './appUserSlice';
+import { useAppDispatch } from '../../context';
+import { reconnectToHub } from '../hub/hubSlice';
 
 const AccountDropdown = () => {
     const { accounts, instance } = useMsal();
     const alignMenu = useMedia(['(min-width: 767px)'], [' dropdown-menu-end'], '')
     const [dropdownVisible, setDropdownVisible] = useState(false)
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const windowClicked = () => {
@@ -29,8 +33,10 @@ const AccountDropdown = () => {
                         scopes,
                         account: response.account,
                     };
+
                     instance.acquireTokenSilent(accessTokenRequest)
                         .then((accessTokenResponse) => {
+                            dispatch(setAccessToken(accessTokenResponse.accessToken));
                         });
                 }
             })
@@ -40,9 +46,11 @@ const AccountDropdown = () => {
     }
 
     const handleLogout = () => {
+        dispatch(clearToken());
         instance.logoutPopup({
             postLogoutRedirectUri: "/",
         });
+        dispatch(reconnectToHub());
     }
 
     return (

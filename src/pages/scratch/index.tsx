@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../../components/layout"
-import { executeFetchAsync } from "@tallman/strong-strap";
+import { useMsal } from "@azure/msal-react";
+import { Stringify } from "@tallman/strong-strap";
+import { useAppSelector } from "../../context";
+import { selectAccessToken, selectAppUser } from "../../features/appUser/appUserSlice";
 
 const ScratchIndex: React.FC<PageProps> = () => {
+    const { accounts } = useMsal();
+    const accessToken = useAppSelector(selectAccessToken);
+    const appUser = useAppSelector(selectAppUser);
+
     return (
         <Layout padTop={true}>
             <div className="container">
@@ -14,8 +21,33 @@ const ScratchIndex: React.FC<PageProps> = () => {
                 </div>
                 <div className="row">
                     <div className="col">
+                        <h2>Account</h2>
                         <div>
-                            Msg:
+                            {
+                                (accounts && accounts.length > 0)
+                                    ? <Stringify o={accounts[0]} />
+                                    : 'No Accounts'
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h2>Access Token</h2>
+                        <div>
+                            {
+                                (accessToken)
+                                    ? <Stringify o={accessToken} />
+                                    : 'No Token'
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h2>App User</h2>
+                        <div>
+                            <Stringify o={appUser} />
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ import { msalConfig } from "./authConfig";
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
-const msalInstance = new PublicClientApplication(msalConfig);
+export const msalInstance = new PublicClientApplication(msalConfig);
 
 export const createStore = () => configureStore({
     reducer: {

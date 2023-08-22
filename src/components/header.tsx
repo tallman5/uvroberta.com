@@ -3,6 +3,7 @@ import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 import React, { useEffect, useState } from 'react'
 import AccountDropdown from '../features/appUser/accountDropdown';
+import Authorize from '../features/appUser/authorize';
 
 const Header = () => {
     const [navMenuVisible, setNavMenuVisible] = useState(false)
@@ -31,11 +32,13 @@ const Header = () => {
                     <div style={{ justifyContent: 'space-between' }} className={(navMenuVisible === true) ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'} id="navbarNavAltMarkup">
                         <div className={'navbar-nav'}>
                             <Link className={(pathname.startsWith('/dashboard')) ? 'nav-link active' : 'nav-link'} to="/dashboard">DASHBOARD</Link>
+                            <Authorize requireDevelopment={true} requireRole='roberta.admins'>
+                                <Link className={(pathname.startsWith('/rob-state')) ? 'nav-link active' : 'nav-link'} to="/rob-state">STATE</Link>
+                                <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>
+                            </Authorize>
                             {
                                 (process.env.NODE_ENV === "development")
                                     ? <>
-                                        <Link className={(pathname.startsWith('/rob-state')) ? 'nav-link active' : 'nav-link'} to="/rob-state">STATE</Link>
-                                        <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>
                                     </>
                                     : null
                             }

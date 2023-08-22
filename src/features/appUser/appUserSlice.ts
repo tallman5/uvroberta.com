@@ -1,23 +1,28 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../context';
 import { executeFetchAsync } from '@tallman/strong-strap';
+import { msalInstance } from '../../context';
+import { AuthenticationResult } from '@azure/msal-browser';
+import jwtDecode from 'jwt-decode';
+import { scopes } from '../../context/authConfig';
 
 export type UserToken = {
     accessToken: string
     expires: Date
-    roles: string[]
-    screenName: string
-    userName: string
 }
 
 export type AppUserState = {
-    guestAccessToken: string | null
-    userToken: UserToken | null
+    accessToken: string | null,
+    roles: string[],
+}
+
+export type WithRoles = {
+    roles: string[],
 }
 
 const initialState: AppUserState = {
-    guestAccessToken: null,
-    userToken: null,
+    accessToken: null,
+    roles: [],
 }
 
 export const appUserSlice = createSlice({
@@ -25,26 +30,36 @@ export const appUserSlice = createSlice({
     initialState: initialState,
     reducers: {
         clearToken: (state: AppUserState) => {
-            state.userToken = null
+            state.accessToken = null;
+            state.roles = [
+            ]
         },
-        setGuestAccessToken: (state: AppUserState, action) => {
-            state.guestAccessToken = action.payload
+        setAccessToken: (state: AppUserState, action) => {
+            state.accessToken = action.payload;
+            const at = jwtDecode<WithRoles>(action.payload);
+            if (at && at.roles) {
+                state.roles = [
+                    ...at.roles
+                ]
+            }
         },
-        setUserToken: (state: AppUserState, action) => {
-            state.userToken = action.payload
-        },
+        setRoles: (state: AppUserState, action) => {
+            state.roles = [
+                ...action.payload
+            ]
+        }
     },
 });
 
+
 // Base Selectors
+export const selectAccessTokenBase = (state: RootState) => state.appUser.accessToken;
 export const selectAppUserBase = (state: RootState) => state.appUser;
-export const selectTokenBase = (state: RootState) => state.appUser.userToken;
-export const selectUserNameBase = (state: RootState) => state.appUser.userToken?.userName;
 
 
 // Reselectors
+export const selectAccessToken = createSelector(selectAccessTokenBase, (val: string | null) => val);
 export const selectAppUser = createSelector(selectAppUserBase, (val: AppUserState) => val);
-export const selectUserName = createSelector(selectUserNameBase, val => val);
 
 
 // Methods
@@ -53,21 +68,32 @@ export const getAccessToken = createAsyncThunk<string, void, { state: RootState 
     async (_, thunkAPI) => {
         let appUser = thunkAPI.getState().appUser;
 
-        if (appUser.userToken?.accessToken) // need to check expiration
-            return appUser.userToken.accessToken;
+        if (appUser?.accessToken) // need to check expiration
+            return appUser.accessToken;
 
-        if (appUser.guestAccessToken)
-            return appUser.guestAccessToken;
+        const a = msalInstance.getActiveAccount();
+        if (a) {
+            const accessTokenRequest = {
+                scopes,
+                account: a,
+            };
+            msalInstance.acquireTokenSilent(accessTokenRequest)
+                .then((accessTokenResponse) => {
+                    thunkAPI.dispatch(setAccessToken(accessTokenResponse.accessToken));
+                    return accessTokenResponse.accessToken;
+                });
+        }
 
         const guestUt: UserToken = await executeFetchAsync(process.env.GATSBY_BASE_URL + '/api/user/guestToken');
         if (guestUt && guestUt.accessToken) {
-            thunkAPI.dispatch(setGuestAccessToken(guestUt.accessToken));
+            thunkAPI.dispatch(setAccessToken(guestUt.accessToken));
             return guestUt.accessToken;
         }
+
         throw 'Could not aquire guest token.'
     }
 );
 
 // Main slice exports
-export const { clearToken, setGuestAccessToken, setUserToken } = appUserSlice.actions;
+export const { clearToken, setAccessToken } = appUserSlice.actions;
 export default appUserSlice.reducer;
