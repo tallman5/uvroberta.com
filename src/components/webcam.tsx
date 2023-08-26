@@ -1,13 +1,11 @@
-import React, { ComponentPropsWithoutRef, useEffect, useState } from 'react'
+import React, { ComponentPropsWithoutRef } from 'react'
 import * as Styles from '../styles'
 
-export interface ILayout extends ComponentPropsWithoutRef<'div'> {
-    src?: string,
-}
+export interface IWebcam extends ComponentPropsWithoutRef<'img'> { }
 
-const Webcam = ({ src }: ILayout) => {
+const Webcam = ({ ...rest }: IWebcam) => {
     return (
-        <img style={Styles.Cover} src={src} alt='Roberta Webcam' />
+        <img style={Styles.Cover} {...rest} />
     )
 }
 

@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { AppThunk, RootState } from "../../context"
+import { RootState } from "../../context"
 import { UiFunction } from '@tallman/strong-strap';
 
 export type Message = {

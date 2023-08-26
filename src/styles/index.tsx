@@ -18,10 +18,19 @@ export const DashBack: CSSProperties = {
 }
 
 export const DashFront: CSSProperties = {
-    bottom: 0,
     height: (DashFrontScale * 9) + 'px',
     left: 0,
     position: 'absolute',
     width: (DashFrontScale * 16) + 'px',
     zIndex: 10,
+}
+
+export const DashFrontBottom: CSSProperties = {
+    ...DashFront,
+    bottom: 0,
+}
+
+export const DashFrontTop: CSSProperties = {
+    ...DashFront,
+    bottom: (DashFrontScale * 9) + 'px',
 }

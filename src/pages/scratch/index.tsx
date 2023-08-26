@@ -12,7 +12,7 @@ const ScratchIndex: React.FC<PageProps> = () => {
     const appUser = useAppSelector(selectAppUser);
 
     return (
-        <Layout padTop={true}>
+        <Layout>
             <div className="container">
                 <div className="row">
                     <div className="col">

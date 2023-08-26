@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../context';
+import React, { ComponentPropsWithoutRef, useEffect, useState } from 'react'
+import { useAppSelector } from '../context';
 import { selectRoberta } from '../features/roberta/robertaSlice';
 import { isBrowser } from '@tallman/strong-strap';
 
-const AzMap = () => {
+export interface IAzMap extends ComponentPropsWithoutRef<'div'> {
+}
+
+const AzMap = ({ style: addedStyles, ...rest }: IAzMap) => {
     const [imageId] = useState("robertaTop");
     const [defCenter] = useState([-75.507144, 40.229057]);
     const [elementId] = useState("mapDiv");
-    const [map, setMap]=useState();
-    const [robertaMarker, setRobertaMarker]=useState();
+    const [map, setMap] = useState();
+    const [robertaMarker, setRobertaMarker] = useState();
 
     const robertaState = useAppSelector(selectRoberta);
 
-    function waitForAtlas() {
-        if (typeof atlas === 'undefined') {
-            setTimeout(waitForAtlas, 1000);
-        }
-        else {
-            const amk = process.env.GATSBY_AZ_MAP_KEY
+    const initMap = () => {
+        const amk = process.env.GATSBY_AZ_MAP_KEY
+        try {
             var newMap = new atlas.Map(elementId, {
                 authOptions: {
                     authType: 'subscriptionKey',
@@ -37,7 +37,23 @@ const AzMap = () => {
             setRobertaMarker(newRobertaMarker);
             newMap.markers.add(newRobertaMarker);
         }
+        catch {
+
+        }
     }
+
+    const waitForAtlas = () => {
+        if (typeof atlas === 'undefined') {
+            setTimeout(waitForAtlas, 500);
+        }
+        else {
+            initMap();
+        }
+    }
+
+    useEffect(() => { 
+        waitForAtlas();
+    }, [addedStyles])
 
     useEffect(() => {
         if (!isBrowser) return;
@@ -85,7 +101,7 @@ const AzMap = () => {
     }, [robertaState])
 
     return (
-        <div id={elementId} style={{ height: "100%" }} />
+        <div id={elementId} style={{ ...addedStyles }} {...rest} />
     )
 }
 

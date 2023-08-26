@@ -37,6 +37,7 @@ const AccountDropdown = () => {
                     instance.acquireTokenSilent(accessTokenRequest)
                         .then((accessTokenResponse) => {
                             dispatch(setAccessToken(accessTokenResponse.accessToken));
+                            dispatch(reconnectToHub());
                         });
                 }
             })

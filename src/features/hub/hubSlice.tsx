@@ -2,7 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit"
 import { AppThunk, RootState } from "../../context"
 const signalR = require("@microsoft/signalr")
 import { HubConnection } from '@microsoft/signalr'
-import { updateGpsState } from "../roberta/robertaSlice";
+import { updateDrivers, updateGpsState } from "../roberta/robertaSlice";
 import { getAccessToken } from "../appUser/appUserSlice";
 import { isBrowser } from "@tallman/strong-strap";
 
@@ -61,6 +61,7 @@ export const connectToHub = (): AppThunk => async (dispatch, getState) => {
     hubConnection.onclose(() => { dispatch(setConnectionStatus(hubConnection.state)); })
 
     // Hub Events
+    hubConnection.on("DriversUpdated", drivers => { dispatch(updateDrivers(drivers)); });
     hubConnection.on("GpsStateUpdated", gpsState => { dispatch(updateGpsState(gpsState)); });
 
     const returnValue = await hubConnection.start()
