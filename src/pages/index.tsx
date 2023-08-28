@@ -50,11 +50,11 @@ const IndexPage: React.FC<PageProps> = () => {
         <AzMap style={viewStyles[0]} />
 
         <div id="dashCam" style={viewStyles[1]}>
-          <Webcam src={process.env.GATSBY_WEBCAM_URL} title="Dash Cam" alt="Dash Cam" />
+          <Webcam src={process.env.GATSBY_WEBCAM_URL || ''} showObjects={true} />
         </div>
 
         <div id="groundCam" style={viewStyles[2]}>
-          <Webcam src={process.env.GATSBY_WEBCAM_URL} title="Ground Cam" alt="Ground Cam" />
+          <Webcam src={process.env.GATSBY_WEBCAM_URL || ''} />
         </div>
 
         <div style={{ position: "absolute", top: '0', left: '0', zIndex: "500" }}>
