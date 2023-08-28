@@ -40,7 +40,7 @@ const StartMenu = () => {
                         <div className="col">
                             <button type="button" className="btn btn-outline-primary btn-sm" onClick={cycleDv}>Toggle View</button>
                             &nbsp;&nbsp;
-                            <ToggleFullscreen type="button" className="btn btn-outline-primary btn-sm" onClick={() => { setMenuVisible(false); }}>Toggle Full Screen</ToggleFullscreen>
+                            <ToggleFullscreen type="button" className="btn btn-outline-primary btn-sm">Toggle Full Screen</ToggleFullscreen>
                         </div>
                     </div>
                     <hr />

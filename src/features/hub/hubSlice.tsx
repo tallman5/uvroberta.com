@@ -97,6 +97,12 @@ export const reconnectToHub = (accessToken: string): AppThunk => async (dispatch
     dispatch(connectToHub(accessToken));
 };
 
+export const setXY = (x: number, y: number): AppThunk => async () => {
+    hubConnection.invoke("SetXY", x, y).catch((err) => {
+        console.error(err.toString());
+    });
+}
+
 export const startDriving = (connectionId: string): AppThunk => async () => {
     hubConnection.invoke("StartDriving", connectionId).catch(function (err) {
         console.error(err.toString());

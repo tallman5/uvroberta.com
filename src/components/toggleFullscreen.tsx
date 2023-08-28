@@ -3,7 +3,7 @@ import React, { ComponentPropsWithoutRef, useState } from 'react'
 export interface IToggleFullscreen extends ComponentPropsWithoutRef<'button'> {
 }
 
-const ToggleFullscreen = ({ children, onClick: customClick, ...rest }: IToggleFullscreen) => {
+const ToggleFullscreen = ({ children, ...rest }: IToggleFullscreen) => {
     const [isFullscreen, setIsFullscreen] = useState(false)
 
     const toggleFullscreen = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -29,8 +29,6 @@ const ToggleFullscreen = ({ children, onClick: customClick, ...rest }: IToggleFu
             }
         }
         setIsFullscreen(!isFullscreen)
-        if (customClick)
-            customClick(event);
     }
 
     return (

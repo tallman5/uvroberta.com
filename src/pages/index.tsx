@@ -2,20 +2,25 @@ import React, { useState } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../context"
-import { ensureHubConnected } from "../features/hub/hubSlice"
+import { ensureHubConnected, setXY } from "../features/hub/hubSlice"
 import * as Styles from "../styles"
 import AzMap from "../components/azMap"
 import Webcam from "../components/webcam"
 import Layout from "../components/layout"
 import { selectImDriving, selectRobertaDashView } from "../features/roberta/robertaSlice"
 import StartMenu from "../features/roberta/startMenu"
-import Thumbstick from "../features/roberta/thumbstick"
+import Thumbstick, { ThumbPosition } from "../features/roberta/thumbstick"
 
 const IndexPage: React.FC<PageProps> = () => {
   const dispatch = useAppDispatch()
   const [viewStyles, setViewStyles] = useState([Styles.DashBack, Styles.DashFrontBottom, Styles.DashFrontTop]);
   const dv = useAppSelector(state => selectRobertaDashView(state));
   const imDriving = useAppSelector(selectImDriving);
+
+  const handleXyChange = (tp: ThumbPosition) => {
+    if (!imDriving) return;
+    dispatch(setXY(tp.x, tp.y));
+  };
 
   useEffect(() => {
     dispatch(ensureHubConnected());
@@ -59,7 +64,7 @@ const IndexPage: React.FC<PageProps> = () => {
         {
           (imDriving)
             ? <div style={{ position: "absolute", bottom: "0", right: "0", zIndex: '1000' }}>
-              <Thumbstick />
+              <Thumbstick onXyChange={handleXyChange} />
             </div>
             : null
         }
