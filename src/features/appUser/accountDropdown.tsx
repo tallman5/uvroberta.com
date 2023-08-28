@@ -3,9 +3,9 @@ import { Icon, KnownIcon, isBrowser, useMedia } from '@tallman/strong-strap';
 import IsAuthenticated from './isAuhthenticated';
 import NotAuthenticated from './notAuthenticated';
 import { useMsal } from "@azure/msal-react";
-import { loginRequest, scopes } from '../../context/authConfig';
-import { clearToken, setAccessToken } from './appUserSlice';
+import { login, logout, setAccessToken } from './appUserSlice';
 import { useAppDispatch } from '../../context';
+import { scopes } from '../../context/authConfig';
 import { reconnectToHub } from '../hub/hubSlice';
 
 const AccountDropdown = () => {
@@ -13,6 +13,21 @@ const AccountDropdown = () => {
     const alignMenu = useMedia(['(min-width: 767px)'], [' dropdown-menu-end'], '')
     const [dropdownVisible, setDropdownVisible] = useState(false)
     const dispatch = useAppDispatch();
+
+    const handleReconnect = () => {
+        const account = instance.getAllAccounts()[0];
+        if (account) {
+            const accessTokenRequest = {
+                scopes,
+                account,
+            };
+            instance.acquireTokenSilent(accessTokenRequest)
+                .then((accessTokenResponse) => {
+                    dispatch(setAccessToken(accessTokenResponse.accessToken));
+                    dispatch(reconnectToHub(accessTokenResponse.accessToken));
+                });
+        }
+    }
 
     useEffect(() => {
         const windowClicked = () => {
@@ -24,35 +39,6 @@ const AccountDropdown = () => {
             return () => { window.removeEventListener("click", windowClicked); };
         }
     }, [dropdownVisible])
-
-    const handleLogin = () => {
-        instance.loginPopup(loginRequest)
-            .then((response) => {
-                if (response.account) {
-                    const accessTokenRequest = {
-                        scopes,
-                        account: response.account,
-                    };
-
-                    instance.acquireTokenSilent(accessTokenRequest)
-                        .then((accessTokenResponse) => {
-                            dispatch(setAccessToken(accessTokenResponse.accessToken));
-                            dispatch(reconnectToHub());
-                        });
-                }
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    }
-
-    const handleLogout = () => {
-        dispatch(clearToken());
-        instance.logoutPopup({
-            postLogoutRedirectUri: "/",
-        });
-        dispatch(reconnectToHub());
-    }
 
     return (
         <div className="dropdown">
@@ -67,10 +53,11 @@ const AccountDropdown = () => {
             </button>
             <div data-bs-popper={(dropdownVisible) ? "static" : ''} className={(dropdownVisible) ? 'dropdown-menu show' + alignMenu : 'dropdown-menu' + alignMenu}>
                 <IsAuthenticated>
-                    <button type="button" className="dropdown-item" onClick={() => handleLogout()}>Sign Out</button>
+                    <button type="button" className="dropdown-item" onClick={handleReconnect}>Reconnect Hub</button>
+                    <button type="button" className="dropdown-item" onClick={() => dispatch(logout())}>Sign Out</button>
                 </IsAuthenticated>
                 <NotAuthenticated>
-                    <button type="button" className="dropdown-item" onClick={() => handleLogin()}>Sign In</button>
+                    <button type="button" className="dropdown-item" onClick={() => dispatch(login())}>Sign In</button>
                 </NotAuthenticated>
             </div>
         </div>

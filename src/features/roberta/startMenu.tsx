@@ -1,13 +1,13 @@
 import { StaticImage } from 'gatsby-plugin-image'
 import React, { useState } from 'react'
 import { Link } from 'gatsby'
-import AccountDropdown from '../features/appUser/accountDropdown'
-import ToggleFullscreen from './toggleFullscreen'
-import Authorize from '../features/appUser/authorize'
 import Drivers from './drivers'
-import { useAppDispatch } from '../context'
-import { cycleDashView } from '../features/roberta/robertaSlice'
-import Expander from './expander'
+import { useAppDispatch } from '../../context'
+import { cycleDashView } from './robertaSlice'
+import Expander from '../../components/expander'
+import AccountDropdown from '../appUser/accountDropdown'
+import ToggleFullscreen from '../../components/toggleFullscreen'
+import Authorize from '../appUser/authorize'
 
 const StartMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false)
@@ -22,7 +22,7 @@ const StartMenu = () => {
         <div className="text-nowrap">
             <button onClick={() => { setMenuVisible(!menuVisible) }} type="button" className="btn btn-light btn-sm">
                 <div className="d-flex align-items-center">
-                    <StaticImage src='../images/icon.png' alt='Roberta' width={32} />
+                    <StaticImage src='../../images/icon.png' alt='Roberta' width={32} />
                     <div style={{ marginLeft: '5px' }}>roberta</div>
                 </div>
             </button>

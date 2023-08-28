@@ -9,11 +9,13 @@ import { isBrowser } from "@tallman/strong-strap";
 let hubConnection: HubConnection;
 
 export type HubState = {
+    connectionId: string
     connectionStatus: string
     hubUrl: string
 }
 
 const initialState: HubState = {
+    connectionId: '',
     connectionStatus: 'Disconnected',
     hubUrl: process.env.GATSBY_BASE_URL + "/robertaHub"
 }
@@ -22,6 +24,9 @@ export const hubSlice = createSlice({
     name: 'hub',
     initialState,
     reducers: {
+        setConnectionId: (state: HubState, action) => {
+            state.connectionId = action.payload;
+        },
         setConnectionStatus: (state: HubState, action) => {
             state.connectionStatus = action.payload;
         },
@@ -32,23 +37,13 @@ export const hubSlice = createSlice({
 export const selectConnectionStatusBase = (state: RootState) => state.hub.connectionStatus;
 
 // Reselectors
-export const selectConnectionStatus = createSelector(selectConnectionStatusBase, (status) => status)
+export const selectConnectionStatus = createSelector(selectConnectionStatusBase, (val) => val);
 
 // Methods
-export const connectToHub = (): AppThunk => async (dispatch, getState) => {
+export const connectToHub = (accessToken: string): AppThunk => async (dispatch, getState) => {
     if (!isBrowser) return;
 
-    if (hubConnection && (hubConnection.state === "Connected" || hubConnection.state === "Connecting"))
-        return hubConnection;
-
-    const state = getState()
-    const currentStatus = state.hub.connectionStatus
-    if (currentStatus !== 'Disconnected')
-        return;
-
-    const gat = dispatch(getAccessToken());
-    const accessToken = (await gat).payload;
-    if (accessToken == '') return;
+    const state = getState();
 
     hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(state.hub.hubUrl, { accessTokenFactory: () => accessToken })
@@ -67,31 +62,53 @@ export const connectToHub = (): AppThunk => async (dispatch, getState) => {
     const returnValue = await hubConnection.start()
         .then(() => {
             dispatch(setConnectionStatus(hubConnection.state));
+            dispatch(setConnectionId(hubConnection.connectionId));
             return hubConnection;
         })
         .catch((err) => {
             console.error(err)
             dispatch(setConnectionStatus(hubConnection.state));
+            dispatch(setConnectionId(''));
             return null;
         });
 
     return returnValue;
 };
 
-export const disconnectHub = (): AppThunk => async () => {
-    if (hubConnection && hubConnection.state !== "Disconnected")
-        hubConnection.stop()
-};
+export const ensureHubConnected = (): AppThunk => async (dispatch) => {
+    if (!isBrowser) return;
+    if (hubConnection && (hubConnection.state === "Connected" || hubConnection.state === "Connecting"))
+        return;
 
-export const reconnectToHub = (): AppThunk => async (dispatch) => {
-    dispatch(disconnectHub());
-    dispatch(connectToHub());
-};
+    const gat = dispatch(getAccessToken());
+    const accessToken: string = (await gat).payload as string;
+    if (accessToken == '') return;
+    dispatch(connectToHub(accessToken));
+}
 
 export function getConnection() {
     return hubConnection
 }
 
+export const reconnectToHub = (accessToken: string): AppThunk => async (dispatch) => {
+    console.log('Reconnecting...');
+    hubConnection.stop();
+    dispatch(setConnectionId(''));
+    dispatch(connectToHub(accessToken));
+};
+
+export const startDriving = (connectionId: string): AppThunk => async () => {
+    hubConnection.invoke("StartDriving", connectionId).catch(function (err) {
+        console.error(err.toString());
+    });
+}
+
+export const stopDriving = (): AppThunk => async () => {
+    hubConnection.invoke("StopDriving").catch((err) => {
+        console.error(err.toString());
+    });
+}
+
 // Main Exports
-export const { setConnectionStatus } = hubSlice.actions;
+export const { setConnectionId, setConnectionStatus } = hubSlice.actions;
 export default hubSlice.reducer;

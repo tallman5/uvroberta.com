@@ -1,7 +1,7 @@
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../../components/layout"
-import { connectToHub, selectConnectionStatus } from "../../features/hub/hubSlice"
+import { ensureHubConnected, selectConnectionStatus } from "../../features/hub/hubSlice"
 import { useAppDispatch, useAppSelector } from "../../context"
 import { Stringify, isBrowser } from "@tallman/strong-strap"
 import { selectRoberta } from "../../features/roberta/robertaSlice"
@@ -14,7 +14,7 @@ const RobertaState: React.FC<PageProps> = () => {
 
     useEffect(() => {
         if (!isBrowser) return;
-        dispatch(connectToHub());
+        dispatch(ensureHubConnected());
     }, [])
 
     return (

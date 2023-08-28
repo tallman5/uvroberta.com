@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '../../context';
+import { AppThunk, RootState } from '../../context';
 import { executeFetchAsync } from '@tallman/strong-strap';
 import { msalInstance } from '../../context';
-import { AuthenticationResult } from '@azure/msal-browser';
 import jwtDecode from 'jwt-decode';
-import { scopes } from '../../context/authConfig';
+import { loginRequest, scopes } from '../../context/authConfig';
+import { ensureHubConnected, reconnectToHub } from '../hub/hubSlice';
 
 export type UserToken = {
     accessToken: string
@@ -93,6 +93,36 @@ export const getAccessToken = createAsyncThunk<string, void, { state: RootState 
         throw 'Could not aquire guest token.'
     }
 );
+
+export const login = (): AppThunk => async (dispatch) => {
+    msalInstance.loginPopup(loginRequest)
+        .then((response) => {
+            if (response.account) {
+                const accessTokenRequest = {
+                    scopes,
+                    account: response.account,
+                };
+
+                msalInstance.acquireTokenSilent(accessTokenRequest)
+                    .then((accessTokenResponse) => {
+                        const at = accessTokenResponse.accessToken;
+                        dispatch(setAccessToken(at));
+                        dispatch(reconnectToHub(at))
+                    });
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+        });
+}
+
+export const logout = (): AppThunk => async (dispatch) => {
+    msalInstance.logoutPopup({
+        postLogoutRedirectUri: "/",
+    });
+    dispatch(clearToken());
+    dispatch(ensureHubConnected());
+}
 
 // Main slice exports
 export const { clearToken, setAccessToken } = appUserSlice.actions;

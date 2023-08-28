@@ -78,11 +78,21 @@ export const selectNumber = (_: RootState, n: number) => n;
 export const selectRobertaBase = (state: RootState) => state.roberta;
 export const selectDriversBase = (state: RootState) => state.roberta.drivers;
 export const selectDvBase = (state: RootState) => state.roberta.dashView;
+export const selectConnectionIdBase = (state: RootState) => state.hub.connectionId;
 
 // Reselectors
 export const selectRoberta = createSelector(selectRobertaBase, item => item);
 export const selectRobertaDrivers = createSelector(selectDriversBase, item => item);
 export const selectRobertaDashView = createSelector(selectDvBase, item => item);
+export const selectImDriving = createSelector(
+    selectConnectionIdBase,
+    selectDriversBase,
+    (cid, drivers) => {
+        var d = drivers.find(i => i.connectionId === cid && i.driverStatusType.name === "Driving")
+        if (d) return true;
+        return false;
+    }
+);
 
 // Methods
 export const cycleDashView = (): AppThunk => async (dispatch, getState) => {

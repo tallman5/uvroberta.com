@@ -5,11 +5,16 @@ import { useMsal } from "@azure/msal-react";
 import { Stringify } from "@tallman/strong-strap";
 import { useAppSelector } from "../../context";
 import { selectAccessToken, selectAppUser } from "../../features/appUser/appUserSlice";
+import Thumbstick, { ThumbPosition } from "../../features/roberta/thumbstick";
 
 const ScratchIndex: React.FC<PageProps> = () => {
     const { accounts } = useMsal();
     const accessToken = useAppSelector(selectAccessToken);
     const appUser = useAppSelector(selectAppUser);
+
+    const handleXyChange = (thumbPosition: ThumbPosition) => {
+        console.log(thumbPosition);
+    };
 
     return (
         <Layout>
@@ -19,6 +24,14 @@ const ScratchIndex: React.FC<PageProps> = () => {
                         <h1>Scratch</h1>
                     </div>
                 </div>
+                <div className="row">
+                    <div className="col">
+                        <div>
+                            <Thumbstick scaleTo={100} debug={true} onXyChange={handleXyChange} />
+                        </div>
+                    </div>
+                </div>
+                <br />
                 <div className="row">
                     <div className="col">
                         <h2>Account</h2>

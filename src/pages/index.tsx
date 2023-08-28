@@ -2,22 +2,23 @@ import React, { useState } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../context"
-import { connectToHub } from "../features/hub/hubSlice"
+import { ensureHubConnected } from "../features/hub/hubSlice"
 import * as Styles from "../styles"
 import AzMap from "../components/azMap"
 import Webcam from "../components/webcam"
 import Layout from "../components/layout"
-import StartMenu from "../components/startMenu"
-import Thumbstick from "../components/thumbstick"
-import { selectRobertaDashView } from "../features/roberta/robertaSlice"
+import { selectImDriving, selectRobertaDashView } from "../features/roberta/robertaSlice"
+import StartMenu from "../features/roberta/startMenu"
+import Thumbstick from "../features/roberta/thumbstick"
 
 const IndexPage: React.FC<PageProps> = () => {
   const dispatch = useAppDispatch()
   const [viewStyles, setViewStyles] = useState([Styles.DashBack, Styles.DashFrontBottom, Styles.DashFrontTop]);
   const dv = useAppSelector(state => selectRobertaDashView(state));
+  const imDriving = useAppSelector(selectImDriving);
 
   useEffect(() => {
-    dispatch(connectToHub());
+    dispatch(ensureHubConnected());
   }, []);
 
   useEffect(() => {
@@ -55,9 +56,13 @@ const IndexPage: React.FC<PageProps> = () => {
           <StartMenu />
         </div>
 
-        <div style={{ position: "absolute", bottom: "0", right: "0", zIndex: '1000' }}>
-          {/* <Thumbstick /> */}
-        </div>
+        {
+          (imDriving)
+            ? <div style={{ position: "absolute", bottom: "0", right: "0", zIndex: '1000' }}>
+              <Thumbstick />
+            </div>
+            : null
+        }
 
       </div>
     </Layout>

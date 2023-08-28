@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Authorize from '../features/appUser/authorize'
+import Authorize from '../appUser/authorize'
 import Drivers from './drivers'
 
 const Dashboard = () => {
