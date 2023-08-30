@@ -8,6 +8,9 @@ import Expander from '../../components/expander'
 import AccountDropdown from '../appUser/accountDropdown'
 import ToggleFullscreen from '../../components/toggleFullscreen'
 import Authorize from '../appUser/authorize'
+import Battery from './battery'
+import PowerScale from './powerScale'
+import Gauges from './gauges'
 
 const StartMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false)
@@ -27,38 +30,51 @@ const StartMenu = () => {
                 </div>
             </button>
             <Expander isExpanded={menuVisible}>
-                <div className="container bg-light rounded">
-                    <div className="row mb-3 shadow-sm">
-                        <div className="col">
-                            <ul className="nav justify-content-end">
-                                <li className="nav-item"><Link to="/state" className="nav-link">State</Link></li>
-                                <AccountDropdown />
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <button type="button" className="btn btn-outline-primary btn-sm" onClick={cycleDv}>Toggle View</button>
-                            &nbsp;&nbsp;
-                            <ToggleFullscreen type="button" className="btn btn-outline-primary btn-sm">Toggle Full Screen</ToggleFullscreen>
-                        </div>
-                    </div>
-                    <hr />
-                    <Authorize requireAdmin={true}>
-                        <div className='row'>
-                            <div className='col'>
-                                <span className="align-middle">Power Scale: 100</span>
-                                &nbsp;&nbsp;&nbsp;
-                                <button className="btn btn-primary btn-sm" type="button">-</button>
-                                &nbsp;
-                                <button className="btn btn-primary btn-sm" type="button">+</button>
-                                &nbsp;<button className="btn btn-primary btn-sm" type="button">x</button>
+                <div className="bg-light rounded">
+                    <nav className="navbar bg-body-secondary rounded">
+                        <ul className="nav">
+                            <li className="nav-item"><Link to="/" className="nav-link">HOME</Link></li>
+                            <li className="nav-item"><Link to="/state" className="nav-link">STATE</Link></li>
+                        </ul>
+                        <AccountDropdown />
+                    </nav>
+                    <div className='row p-3'>
+                        <div className='col'>
+                            <div className="row">
+                                <div className="col">
+                                    <button type="button" className="btn btn-outline-primary btn-sm" onClick={cycleDv}>Toggle View</button>
+                                    &nbsp;&nbsp;
+                                    <ToggleFullscreen type="button" className="btn btn-outline-primary btn-sm">Toggle Full Screen</ToggleFullscreen>
+                                </div>
+                            </div>
+                            <hr />
+                            <Authorize requireAdmin={true}>
+                                <div className='row'>
+                                    <div className='col'>
+                                        <PowerScale />
+                                    </div>
+                                </div>
+                                <hr />
+                            </Authorize>
+                            <div className="row">
+                                <div className="col">
+                                    <Drivers />
+                                </div>
                             </div>
                         </div>
-                    </Authorize>
-                    <div className="row">
-                        <div className="col">
-                            <Drivers />
+                        <div className='col'>
+                            <div className='row'>
+                                <div className='col'>
+                                    <center>
+                                        <Battery battPercent={75} isHorizontal={true} />
+                                    </center>
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='col'>
+                                    <Gauges />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

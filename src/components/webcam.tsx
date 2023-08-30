@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as Styles from '../styles'
 import * as tf from '@tensorflow/tfjs';
 import * as cocossd from '@tensorflow-models/coco-ssd';
+import { StaticImage } from 'gatsby-plugin-image';
 
 export interface WebcamProps {
     showObjects?: boolean
@@ -66,13 +67,16 @@ const Webcam: React.FC<WebcamProps> = ({ showObjects = false, src }) => {
     }, [imgReady, tfReady]);
 
     return (
-        (showObjects)
-            ?
+        <>
+            (showObjects) ?
             <>
                 <img ref={imgRef} crossOrigin='anonymous' src={src} style={{ ...Styles.Cover, display: 'none' }} onLoad={() => setImgReady(true)} />
                 <canvas ref={canvasRef} style={Styles.Cover} />
             </>
             : <img src={src} style={Styles.Cover} />
+
+            <StaticImage src='../images/patience.webp' alt='Waiting' style={{ ...Styles.Cover, display: (imgReady) ? 'none' : 'unset' }} />
+        </>
     )
 }
 

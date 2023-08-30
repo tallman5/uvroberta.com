@@ -11,7 +11,7 @@ const Layout = ({ children, hideHeader = false }: ILayout) => {
         <div style={{ minHeight: '100.vh', display: 'flex', flexDirection: 'column' }}>
             {
                 (hideHeader == false)
-                    ? <Header />
+                    ? <><Header /><div style={{ height: '56px' }}></div></>
                     : null
             }
             <main style={{ flexGrow: 1 }}>
