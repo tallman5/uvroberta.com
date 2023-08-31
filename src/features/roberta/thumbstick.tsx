@@ -103,9 +103,10 @@ const Thumbstick: React.FC<ThumbstickProps> = ({ boxSize = 200, circleSize = 50,
                     ?
                     <>
                         <br />
-                        <div>
+                        <div style={{ backgroundColor: '#00000044', color: 'white', padding: '3px' }}>
                             Left: {position.left.toString().padStart(3, "0")},
-                            Top: {position.top.toString().padStart(3, "0")},
+                            Top: {position.top.toString().padStart(3, "0")}
+                            <br />
                             X: {position.x.toString().padStart(4, "0")},
                             Y: {position.y.toString().padStart(4, "0")}
                         </div>

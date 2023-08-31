@@ -48,7 +48,7 @@ const Dashboard = () => {
             <AzMap style={viewStyles[0]} />
 
             <div id="dashCam" style={viewStyles[1]}>
-                <Webcam src={process.env.GATSBY_WEBCAM_URL || ''} showObjects={true} />
+                <Webcam src={process.env.GATSBY_WEBCAM_URL || ''} />
             </div>
 
             <div id="groundCam" style={viewStyles[2]}>
@@ -62,7 +62,7 @@ const Dashboard = () => {
             {
                 (imDriving)
                     ? <div style={{ position: "absolute", bottom: "0", right: "0", zIndex: '1000' }}>
-                        <Thumbstick onXyChange={handleXyChange} />
+                        <Thumbstick onXyChange={handleXyChange} debug={true} />
                     </div>
                     : null
             }

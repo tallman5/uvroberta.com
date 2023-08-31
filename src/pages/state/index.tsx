@@ -30,8 +30,7 @@ const RobertaState: React.FC<PageProps> = () => {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <h2>GPS State</h2>
-                        <Stringify o={robertaState.gpsState} />
+                        <Stringify o={robertaState} />
                     </div>
                 </div>
             </div>

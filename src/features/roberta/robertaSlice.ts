@@ -40,12 +40,14 @@ export type RobertaState = {
     dashView: number
     drivers: Driver[]
     gpsState: GpsState
+    roboteqState: any
 }
 
 const initialState: RobertaState = {
     dashView: 0,
     drivers: [],
     gpsState: initialGpsState,
+    roboteqState: undefined,
 }
 
 export const robertaSlice = createSlice({
@@ -68,6 +70,12 @@ export const robertaSlice = createSlice({
             return {
                 ...state,
                 gpsState: action.payload
+            }
+        },
+        updateRoboteqState: (state, action) => {
+            return {
+                ...state,
+                roboteqState: action.payload
             }
         }
     },
@@ -102,5 +110,5 @@ export const cycleDashView = (): AppThunk => async (dispatch, getState) => {
 };
 
 
-export const { updateDashView, updateDrivers, updateGpsState } = robertaSlice.actions;
+export const { updateDashView, updateDrivers, updateGpsState, updateRoboteqState } = robertaSlice.actions;
 export default robertaSlice.reducer;

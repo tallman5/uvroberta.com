@@ -2,8 +2,8 @@ import { StaticImage } from 'gatsby-plugin-image'
 import React, { useState } from 'react'
 import { Link } from 'gatsby'
 import Drivers from './drivers'
-import { useAppDispatch } from '../../context'
-import { cycleDashView } from './robertaSlice'
+import { useAppDispatch, useAppSelector } from '../../context'
+import { cycleDashView, selectRoberta } from './robertaSlice'
 import Expander from '../../components/expander'
 import AccountDropdown from '../appUser/accountDropdown'
 import ToggleFullscreen from '../../components/toggleFullscreen'
@@ -15,6 +15,7 @@ import Gauges from './gauges'
 const StartMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false)
     const dispatch = useAppDispatch();
+    const robertaState = useAppSelector(selectRoberta);
 
     const cycleDv = () => {
         dispatch(cycleDashView());
@@ -66,7 +67,7 @@ const StartMenu = () => {
                             <div className='row'>
                                 <div className='col'>
                                     <center>
-                                        <Battery battPercent={75} isHorizontal={true} />
+                                        <Battery battPercent={robertaState?.roboteqState?.batterState?.percent} isHorizontal={true} />
                                     </center>
                                 </div>
                             </div>
