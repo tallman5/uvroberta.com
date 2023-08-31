@@ -73,7 +73,7 @@ const Webcam: React.FC<WebcamProps> = ({ showObjects = false, src }) => {
                 <img ref={imgRef} crossOrigin='anonymous' src={src} style={{ ...Styles.Cover, display: 'none' }} onLoad={() => setImgReady(true)} />
                 <canvas ref={canvasRef} style={Styles.Cover} />
             </>
-            : <img src={src} style={Styles.Cover} />
+            : <img src={src} style={Styles.Cover} onLoad={() => setImgReady(true)} />
 
             <StaticImage src='../images/patience.webp' alt='Waiting' style={{ ...Styles.Cover, display: (imgReady) ? 'none' : 'unset' }} />
         </>
