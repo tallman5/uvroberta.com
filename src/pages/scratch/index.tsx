@@ -10,7 +10,7 @@ const ScratchIndex: React.FC<PageProps> = () => {
                 <div className="row">
                     <div className="col">
                         <div>
-                            <Webcam src={'https://rofo.mcgurkin.net:5101/stream'} showObjects={true} />
+                            <Webcam src={'https://rofo.mcgurkin.net:5101/stream'} />
                         </div>
                     </div>
                 </div>

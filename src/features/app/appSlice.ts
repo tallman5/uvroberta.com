@@ -23,10 +23,10 @@ export const appSlice = createSlice({
     initialState,
     reducers: {
         addMessage: (state: AppState, action) => {
-            let newId = Math.max(...state.messageList.map(o => o.id), 0)
-            newId++
-            action.payload.id = newId
-            state.messageList.push(action.payload)
+            let newId = Math.max(...state.messageList.map(o => o.id), 0);
+            newId++;
+            action.payload.id = newId;
+            state.messageList.push(action.payload);
         },
         clearMessages: (state) => {
             state.messageList = [];

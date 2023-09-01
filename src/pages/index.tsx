@@ -13,7 +13,7 @@ const IndexPage: React.FC<PageProps> = () => {
         </div>
         <br/>
         <div className="row">
-          <div className="col" style={{height: '1000px'}}>
+          <div className="col">
 
           </div>
         </div>

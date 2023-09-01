@@ -4,6 +4,7 @@ import { StaticImage } from 'gatsby-plugin-image'
 import React, { useEffect, useState } from 'react'
 import AccountDropdown from '../features/appUser/accountDropdown';
 import Authorize from '../features/appUser/authorize';
+import HubStatus from '../features/hub/hubStatus';
 
 const Header = () => {
     const [navMenuVisible, setNavMenuVisible] = useState(false)
@@ -35,12 +36,9 @@ const Header = () => {
                             <Link className={(pathname.startsWith('/state')) ? 'nav-link active' : 'nav-link'} to="/state">STATE</Link>
                             <Link className={(pathname.startsWith('/scratch')) ? 'nav-link active' : 'nav-link'} to="/scratch">SCRATCH</Link>
                         </Authorize>
-                        {
-                            (process.env.NODE_ENV === "development")
-                                ? <>
-                                </>
-                                : null
-                        }
+                    </div>
+                    <div>
+                        <HubStatus />
                     </div>
                     <div className='d-flex'>
                         <AccountDropdown />
