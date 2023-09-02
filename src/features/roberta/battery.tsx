@@ -5,7 +5,7 @@ export interface BatteryProps {
     isHorizontal?: boolean
 }
 
-const Battery: React.FC<BatteryProps> = ({ battPercent = 100, isHorizontal = false }) => {
+const Battery: React.FC<BatteryProps> = ({ battPercent = 0, isHorizontal = false }) => {
     const bgColor = "#555"
     const [color, setColor] = useState(bgColor);
     const [levelCount, setLevelCount] = useState(0);

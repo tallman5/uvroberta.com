@@ -62,7 +62,7 @@ const Dashboard = () => {
             {
                 (imDriving)
                     ? <div style={{ position: "absolute", bottom: "0", right: "0", zIndex: '1000' }}>
-                        <Thumbstick onXyChange={handleXyChange} debug={true} />
+                        <Thumbstick onXyChange={handleXyChange} />
                     </div>
                     : null
             }
