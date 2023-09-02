@@ -87,6 +87,7 @@ export const selectRobertaBase = (state: RootState) => state.roberta;
 export const selectDriversBase = (state: RootState) => state.roberta.drivers;
 export const selectDvBase = (state: RootState) => state.roberta.dashView;
 export const selectConnectionIdBase = (state: RootState) => state.hub.connectionId;
+export const selectPowerScaleBase = (state: RootState) => state.roberta.roboteqState.powerScale;
 
 // Reselectors
 export const selectRoberta = createSelector(selectRobertaBase, item => item);
@@ -101,6 +102,7 @@ export const selectImDriving = createSelector(
         return false;
     }
 );
+export const selectPowerScale = createSelector(selectPowerScaleBase, val => val);
 
 // Methods
 export const cycleDashView = (): AppThunk => async (dispatch, getState) => {

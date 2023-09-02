@@ -134,6 +134,12 @@ export const reconnectToHub = (accessToken: string): AppThunk => async (dispatch
     dispatch(connectToHub(accessToken));
 };
 
+export const setPowerScale = (scale: number): AppThunk => async () => {
+    hubConnection.invoke("SetPowerScale", scale).catch((err) => {
+        console.error(err.toString());
+    });
+}
+
 export const setXY = (x: number, y: number): AppThunk => async () => {
     hubConnection.invoke("SetXY", x, y).catch((err) => {
         console.error(err.toString());
